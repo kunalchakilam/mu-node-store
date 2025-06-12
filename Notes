@@ -1,0 +1,8 @@
+1. Create a folder  and open it through VSCode
+2. In VScode terminal run -> npm init -y
+3. Install express by running -> npm install express
+4. Create a new file called index.js
+5. Go to package.json and below name add this line -> "type": "module",
+6. In index.js write the below code
+   Code:
+   
