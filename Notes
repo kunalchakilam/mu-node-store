@@ -5,4 +5,5 @@
 5. Go to package.json and below name add this line -> "type": "module",
 6. In index.js write the below code
    Code:
-   
+7. Install npm i cors
+ 
