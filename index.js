@@ -1,16 +1,31 @@
 import express from "express";
-import cors from "cors";
+import mongoose from "mongoose";
 
+import cors from "cors";
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-app.listen(8080, () => {
-  console.log("Server started");
+mongoose.connect("mongodb://localhost:27017/mudb").then(() => {
+  app.listen(8080, () => {
+    console.log("Server started");
+  });
 });
 
-let products = [];
-let users = []; 
+const userSchema = mongoose.Schema({
+  name: { type: String },
+  email: { type: String },
+  pass: { type: String },
+});
+
+const userModel = mongoose.model("user", userSchema);
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+const products = [];
 
 app.post("/products", async (req, res) => {
   console.log(req.body);
@@ -23,13 +38,14 @@ app.get("/products", async (req, res) => {
   res.json(products);
 });
 
-app.post("/users", async (req, res) => {
-  console.log(req.body);
-  const body = await req.body;
-  users.push(body);
-  res.json(body);
+app.post("/register", async (req, res) => {
+  const body = req.body;
+  const user = await userModel.create(body);
+  res.json(user);
 });
 
-app.get("/users", async (req, res) => {
-  res.json(users);
+app.post("/login", async (req, res) => {
+  const body = req.body;
+  const found = await userModel.findOne({ email: body.email, pass: body.pass });
+  res.json(found);
 });
